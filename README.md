@@ -1,6 +1,6 @@
 # Binomial Mixture Model with Expectation-Maximization Algorithm
 
-I write an article on this model on medium.com. This is [the link](https://medium.com/@jingluan.xw/binomial-mixture-model-with-expectation-maximum-em-algorithm-feeaf0598b60).
+I write an article on this model on medium.com. This is [the link](https://medium.com/@jingluan.xw/binomial-mixture-model-with-expectation-maximum-em-algorithm-feeaf0598b60). If you are interested in the derivations of the equations used in this code and the article, please read [my note](https://www.dropbox.com/s/fy2kq9eanhwinpr/Binomial_Mixture_Model_EL_Algorithm_Derivations%20%281%29.pdf?dl=0).
 
 In the notebook `BMM_EM_Algorithm.ipynb`, I first generate random data according to two mixed binomial distribution. Then I use the EL Algorithm to fit a BMM for the data. This is a demonstration on how to implement the EL Algorithm to build up a BMM model.
 
