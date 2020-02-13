@@ -4,6 +4,10 @@ I write an article on this model on medium.com. This is [the link](https://mediu
 
 In the notebook `BMM_EM_Algorithm.ipynb`, I first generate random data according to two mixed binomial distribution. Then I use the EL Algorithm to fit a BMM for the data. This is a demonstration on how to implement the EL Algorithm to build up a BMM model.
 
+In the notebook `BMM_EM_Algorithm_fit_K_torch.ipynb`, I take use of torch, which is very good at matrix operations. The matrix operations naturally replace loops, meaning that a loop now can be executed in a parallel way. Thus torch speeds up the calculation significantly. Another advantage of torch is that it allows the usage of gpu, which further speeds up the calculation.
+
+The second notebook, `BMM_EM_Algorithm_fit_K_torch.ipynb`, also deals with the choice for K, the number of components in a BMM. Say, K=3, meaning that there are three different binomial distributions in the mixture model. The optimal `K` is chosen based on Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC). The AIC and BIC decreases as `K` increases, and they flatten (or stops decreasing dramatically) with increasing `K` at the some value. Then this value is chosen as the optimal `K`.
+
 # Author
 Jing Luan -- jingluan.xw at gmail dot com
 
