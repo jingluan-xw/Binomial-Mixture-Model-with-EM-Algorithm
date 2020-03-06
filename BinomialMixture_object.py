@@ -55,7 +55,7 @@ class BinomialMixture():
         max_step: int
                   the maximum number of iteration steps.
         verbose: Boolean
-                 whether to print out the information of the fitting process. 
+                 whether to print out the information of the fitting process.
         '''
         self.K = n_components # int, number of Binomial distributions in the Mixture
         self.tolerance = tolerance
@@ -65,13 +65,10 @@ class BinomialMixture():
         # initialize the pi_list
         pi_list = Uniform(low=1e-6, high=1e0-1e-6).sample([self.K-1]).to(device)
         pi_K = t.FloatTensor([1e0]) - pi_list.sum()
-        print(f"pi_list is on device {pi_list.get_device()}")
-        print(f"pi_K is on device {pi_K.get_device()}")
         self.pi_list = torch.cat([pi_list, pi_K], dim=0)
 
         # initialize the theta_list
         self.theta_list = Uniform(low=1e-6, high=1e0-1e-6).sample([self.K])
-
 
     def calc_logL(self, N_ls, n_ls):
         '''
@@ -238,7 +235,6 @@ class BinomialMixture():
         # convert numpy arrays to torch tensors.
         self.theta_list = t.FloatTensor(theta_array)
         self.pi_list = t.FloatTensor(pi_array)
-
 
     def fit(self, N_ls, n_ls):
         '''
@@ -434,32 +430,39 @@ class BinomialMixture():
 
         from scipy.stats import binom
 
+        # save to host.cpu and then convert to numpy
+        # we need to do it because scipy needs it.
+        N_ls_new = N_ls_new.cpu().numpy()
+        n_ls_new = n_ls_new.cpu().numpy()
+        theta_list = self.theta_list.cpu()
+        pi_list = self.pi_list
+
         p_value_ls = []
-        for i in range(len(N_ls)):
-            N = N_ls[i]
-            n = n_ls[i]
+        for i in range(len(N_ls_new)):
+            N = N_ls_new[i]
+            n = n_ls_new[i]
 
             if side == 'right':
-                sf_list = binom.sf(n,N,self.theta_list)
-                pmf_list = binom.pmf(n,N,self.theta_list)
-                p_value = torch.matmul(self.pi_list, t.FloatTensor(sf_list + pmf_list))
+                sf_list = binom.sf(n, N, theta_list)
+                pmf_list = binom.pmf(n, N, theta_list)
+                p_value = torch.matmul(pi_list, t.FloatTensor(sf_list + pmf_list))
                 p_value_ls.append(p_value)
 
             elif side == 'left':
-                cmf_list = binom.cdf(n,N,self.theta_list)
-                p_value = torch.matmul(self.pi_list, t.FloatTensor(cmf_list))
+                cmf_list = binom.cdf(n, N, theta_list)
+                p_value = torch.matmul(pi_list, t.FloatTensor(cmf_list))
                 p_value_ls.append(p_value)
 
             elif side == 'both':
 
-                sf_list = binom.sf(n,N,self.theta_list)
-                pmf_list = binom.pmf(n,N,self.theta_list)
-                p_value_right = torch.matmul(self.pi_list, t.FloatTensor(sf_list + pmf_list))
+                sf_list = binom.sf(n, N, theta_list)
+                pmf_list = binom.pmf(n, N, theta_list)
+                p_value_right = torch.matmul(pi_list, t.FloatTensor(sf_list + pmf_list))
 
-                cmf_list = binom.cdf(n,N,self.theta_list)
-                p_value_left = torch.matmul(self.pi_list, t.FloatTensor(cmf_list))
+                cmf_list = binom.cdf(n, N, theta_list)
+                p_value_left = torch.matmul(pi_list, t.FloatTensor(cmf_list))
 
                 p_value = 2.0*torch.min(p_value_right, p_value_left)
                 p_value_ls.append(p_value)
 
-        return p_value_ls
+        return t.FloatTensor(p_value_ls)
