@@ -14,7 +14,9 @@ and uses its `.fit()` method to fit some artificially generated data by a number
 
 * The jupyter notebook `p_value_diagnosis.ipynb` shows the example of fitting BMM on DNA data. The data used in this file is not publically available, so you won't be able to reproduce the results in this notebook. The purpose of putting this notebook here is to show you that a BMM model may better describe the sequencing noise in the DNA data and thus makes the histogram of p values sensible. The value of `K` is chosen based on the the figure below which shows that the optimal `K` is the value beyond which the AIC stops decreasing significantly.
 
-![AIC versus K](AIC_vs_K.png)
+<p align="center">
+  <img src="AIC_vs_K.png" width=350 title="AIC versus K">
+</p>
 
 ## Dependencies
 
