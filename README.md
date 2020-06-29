@@ -16,7 +16,7 @@ and uses its `.fit()` method to fit some artificially generated data by a Binomi
 
 ## Dependencies
 
-* torch
+* pytorch
 * commonly used packages: numpy, scipy, matplotlib
 * I develop this package in Python 3.7
 
