@@ -10,7 +10,7 @@
 method takes in a new (or old) set of (N,n) pairs and predicts the posterior probabilities for them to belong to each component of the already-trained Binomial-Mixture model.
 
 * The jupyter notebook `tutorial.ipynb` calls the object `BinomialMixture` from `BinomialMixture.py`
-and uses its `.fit()` method to fit some artificially generated data by a number of Binomial Mixture Models of different values of `K`, and uses AIC to pick the optimal value of `K`.
+and uses its `.fit()` method to fit some artificially generated data by a number of Binomial Mixture Models of different values of `K`, and uses both Akaike Information Criterion (**AIC**) and 5-fold **Cross Validation** to pick the optimal value of `K`.
 
 * The jupyter notebook `p_value_diagnosis.ipynb` shows the example of fitting BMM on DNA data. The data used in this file is not publically available, so you won't be able to reproduce the results in this notebook. The purpose of putting this notebook here is to show you that a BMM model may better describe the sequencing noise in the DNA data and thus makes the histogram of p values sensible. The value of `K` is chosen based on the the figure below which shows that the optimal `K` is the value beyond which the AIC stops decreasing significantly.
 
